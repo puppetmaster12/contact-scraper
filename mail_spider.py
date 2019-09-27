@@ -1,13 +1,22 @@
+import logging
+import os
+import pandas as pd
+import re
+import scrapy
+from scrapy.crawler import CrawlerProcess
+from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
+from googlesearch import search
+
 class MailSpider(scrapy.Spider):
     name = 'email'
 
     def parse(self, response):
-        links = LxmlLinkExtractor(allow()).extract_links(response)
+        links = LxmlLinkExtractor(allow=()).extract_links(response)
         links = [str(link.url) for link in links]
         links.append(str(response.url))
 
         for link in links:
-            yield Scrapy.Request(url=link, callback=self.parse_link)
+            yield scrapy.Request(url=link, callback=self.parse_link)
 
     def parse_link(self, response):
         for word in self.reject:
